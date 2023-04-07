@@ -13,14 +13,11 @@ const NewsForm = (props) => {
     const { formId, actions, dataDetail, onSubmit, setIsChangedFormValues, groups, branchs, isEditing, listcategory } = props;
     const { execute: executeUpFile, data } = useFetch(apiConfig.file.upload);
     const [ imageUrl, setImageUrl ] = useState(null);
-    
-
     const { form, mixinFuncs, onValuesChange } = useBasicForm({
         onSubmit,
         setIsChangedFormValues,
     });
-    
-    // const {data}=useFetch(apiConfig.category);
+    let datalist=[];
     const uploadFile = (file, onSuccess, onError) => {
         executeUpFile({
             data: {
@@ -42,7 +39,15 @@ const NewsForm = (props) => {
     const handleSubmit = (values) => {
         return mixinFuncs.handleSubmit({ ...values, avatar: imageUrl });
     };
+    let updatedListcategory=[];
+    if(listcategory.data){
+        updatedListcategory = listcategory?.data.map(({ id: value, categoryName: label }) => ({ value, label }));
+    }
+   
+    console.log("Updatetest",updatedListcategory);
 
+    console.log(datalist);
+    console.log(listcategory?.data);
     useEffect(() => {
         form.setFieldsValue({
             ...dataDetail,
@@ -79,17 +84,7 @@ const NewsForm = (props) => {
                         />
                     </Col>
                 </Row>
-                {/* <Row gutter={16}>
-                    <Col span={12}>
-                        <CropImageField
-                            label="Banner"
-                            name="banner"
-                            imageUrl={imageUrl && `${AppConstants.contentRootUrl}${imageUrl}`}
-                            aspect={1 / 1}
-                            uploadFile={uploadFile}
-                        />
-                    </Col>
-                </Row> */}
+               
                 <Row gutter={16}>
                     <Col span={12}>
                         <TextField label="Title" name="title" />
@@ -99,48 +94,7 @@ const NewsForm = (props) => {
                     </Col>
                 </Row>
 
-                {/* <Row gutter={16}>
-                    <Col span={12}>
-                        <TextField
-                            label="Password"
-                            required={!isEditing}
-                            name="password"
-                            type="password"
-                            rules={[
-                                {
-                                    validator: async () => {
-                                        const isTouched = form.isFieldTouched('password');
-                                        if (isTouched) {
-                                            const value = form.getFieldValue('password');
-                                            if (value.length < 6) {
-                                                throw new Error('Password must be at least 6 characters');
-                                            }
-                                        }
-                                    },
-                                },
-                            ]}
-                        />
-                    </Col>
-                    <Col span={12}>
-                        <TextField
-                            label="Confirm New Password"
-                            required={!isEditing}
-                            name="confirmPassword"
-                            type="password"
-                            rules={[
-                                {
-                                    validator: async () => {
-                                        const password = form.getFieldValue('password');
-                                        const confirmPassword = form.getFieldValue('confirmPassword');
-                                        if (password !== confirmPassword) {
-                                            throw new Error('Password does not match');
-                                        }
-                                    },
-                                },
-                            ]}
-                        />
-                    </Col>
-                </Row> */}
+              
 
                 <Row gutter={16}>
                     <Col span={12}>
@@ -148,7 +102,7 @@ const NewsForm = (props) => {
                     </Col>
                     <Col span={12}>
                        
-                        <SelectField label='Category' options={listcategory.data} ></SelectField>
+                        <SelectField label='Category' options={updatedListcategory} optionValue='value' optionLabelProp="label" name='categoryId' ></SelectField>
                     </Col>
                 </Row>
                 <div className="footer-card-form">{actions}</div>

@@ -69,7 +69,7 @@ const NewsSavePage = () => {
                 isEditing={isEditing}
                 actions={mixinFuncs.renderActions()}
                 onSubmit={onSave}
-                listcategory={listcategory}
+                listcategory={listcategory ? listcategory : {}}
             />
         </PageWrapper>
     );
