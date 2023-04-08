@@ -3,6 +3,14 @@
 
 .search-form{
     div{
-        margin-bottom: 0px !important;         
+        margin-bottom: 0px !important;
+        border-radius: 0%;   
+    }
+    button{
+        border-radius: 0%;
+    }
+    input{
+        border-radius: 0%;
+        
     }
 }

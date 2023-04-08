@@ -8,10 +8,10 @@ import { AppConstants, DEFAULT_TABLE_ITEM_SIZE, STATUS_ACTIVE, STATUS_DELETE, ST
 import PageWrapper from '@components/common/layout/PageWrapper';
 import ListPage from '@components/common/layout/ListPage';
 import useFetch from '@hooks/useFetch';
-import SelectField from '@components/common/form/SelectField';
 const NewsListPage = () => {
     const [ listcategory, setListCategory ] = useState([]);
-    
+    const { execute:executeCategory, data:dataCategory }=useFetch(apiConfig.category.autocomplete);
+    let mainListdatacategory=[];
     const { data, mixinFuncs, queryFilter, loading, pagination } = useListBase({
         apiConfig: apiConfig.news,
         options: {
@@ -19,22 +19,33 @@ const NewsListPage = () => {
             objectName: 'News',
         },
         override: (funcs) => {
-            funcs.mappingData = (response) => {
-                if (response.result === true) {
+           
+            funcs.mappingData = (response) => {                                            
+                if (response.result === true) {                                     
                     return {
                         data: response.data.data,
-                        total: response.data.totalElements,
+                        total: response.data.totalElements,                                            
                     };
                 }
             };
         },
     });
     const listStatus=[ { value:STATUS_PENDING , label:"Pending" },  { value:STATUS_ACTIVE , label:"Active" },  { value:STATUS_DELETE , label:"Delete" },  { value:STATUS_INACTIVE , label:"Inactive" }  ];
-    const { execute:executeCategory, data:dataCategory }=useFetch(apiConfig.category.autocomplete);
+    
     let updatedListcategory=[];
     if(listcategory.data){
-        updatedListcategory = listcategory?.data.map(({ id: value, categoryName: label }) => ({ value, label }));
+        updatedListcategory = listcategory?.data.map(({ id: value, categoryName: label }) => ({ value, label }));       
     }
+    // mergedArray 
+    // let mergedArray=[];
+    // if(listcategory.data){
+    //     mergedArray = data.map(obj1 => {
+    //         const obj2 = listcategory.data.find(obj2 => obj2.id === obj1.categoryId);
+    //         // return { id: obj1.id, categoryId: obj1.categoryId, categoryName: obj2.categoryName, avatar: obj1.avatar, banner: obj1.banner, createdBy: obj1.createdBy, createdDate: obj1.createdDate, kind: obj1.kind, modifiedBy: obj1.modifiedBy, modifiedDate: obj1.modifiedDate, pinTop: obj1.pinTop, ...obj1 };
+    //         return { id: obj1.id, categoryId: obj1.categoryId, categoryName: obj2.categoryName, ...obj1 };
+    //     });
+    // }
+    // console.log("mergedArray", mergedArray);
     const handleCategoryName = (id) => {
         let categoryname="";
         if(listcategory.data){
@@ -62,7 +73,7 @@ const NewsListPage = () => {
             ),
         },
         { title: 'title', dataIndex: 'title' },
-        { title: 'Category',align: "center", dataIndex: 'categoryId', render:( categoryId ) => ( handleCategoryName(categoryId) ) },     
+        { title: 'Category',align: "center", dataIndex: 'categoryId', render:(categoryId) => (handleCategoryName(categoryId)) },     
         { title: 'Created Date', dataIndex: 'createdDate', width: '130px' },
         { title: 'Pin top',align: "center", dataIndex: 'pinTop', width: '200px', render:(pinTop) => ( pinTop==1 ? ( <PushpinOutlined/> ) : 0 )  },
         mixinFuncs.renderStatusColumn({ width: '90px' }),
@@ -95,8 +106,7 @@ const NewsListPage = () => {
         executeCategory({
             onCompleted: (respone) => {
                 if (respone.result===true) setListCategory(respone.data);
-            },
-           
+            },          
         });
     },[]);
     return (
