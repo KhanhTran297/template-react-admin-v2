@@ -23,9 +23,10 @@ const NewsSavePage = () => {
         override: (funcs) => {
             funcs.prepareUpdateData = (data) => {
                 return {
-                    status: STATUS_ACTIVE,
+                    status: data.status,
                     kind: categoryKind.news,
-                    avatarPath: data.avatar,
+                    avatar: data.avatar,
+                    banner: data.banner,
                     ...data,
                     id: id,
                 };
@@ -35,8 +36,7 @@ const NewsSavePage = () => {
                     ...data,
                     kind:  categoryKind.news,
                     avatarPath: data.avatar,
-                    pinTop:1,
-                    status: STATUS_ACTIVE,
+                                   
                 };
             };
 
@@ -56,7 +56,6 @@ const NewsSavePage = () => {
             onError: mixinFuncs.handleGetDetailError,
         });
     },[]);
-    console.log("data",listcategory);
     return (
         <PageWrapper
             loading={loading}

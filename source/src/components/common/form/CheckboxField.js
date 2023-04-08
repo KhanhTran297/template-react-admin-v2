@@ -13,10 +13,12 @@ function CheckboxField({
     onChange,
     formItemProps,
     fieldProps,
+    checked,
+    valueCheck,
     ...props
 }) {
     const { rules } = useFormField(props);
-
+    console.log(onChange);
     return (
         <Form.Item
             {...formItemProps}
@@ -25,9 +27,10 @@ function CheckboxField({
             label={label}
             name={name}
             rules={rules}
+            checked={checked}
             valuePropName="checked"
         >
-            <Checkbox {...fieldProps} onChange={onChange}>
+            <Checkbox {...fieldProps} onChange={onChange} >
                 {optionLabel}
             </Checkbox>
         </Form.Item>
