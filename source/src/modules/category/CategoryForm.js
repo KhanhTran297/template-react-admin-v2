@@ -67,11 +67,11 @@ const CategoryForm = (props) => {
                         <TextField label="Category Name" required name="categoryName" />
                     </Col>
                     <Col span={12}>
-                        <TextField label="Category Description" required name="categoryDescription" />
+                        <TextField label="Category Description" required name="categoryDescription" type="textarea" />
                     </Col>
                     
                 </Row>
-                
+               
                 
                 <div className="footer-card-form">{actions}</div>
             </Card>

@@ -8,6 +8,7 @@ import { AppConstants, DEFAULT_TABLE_ITEM_SIZE, STATUS_ACTIVE, STATUS_DELETE, ST
 import PageWrapper from '@components/common/layout/PageWrapper';
 import ListPage from '@components/common/layout/ListPage';
 import useFetch from '@hooks/useFetch';
+import { IconPinnedOff, IconPin } from '@tabler/icons-react';
 const NewsListPage = () => {
     const [ listcategory, setListCategory ] = useState([]);
     const { execute:executeCategory, data:dataCategory }=useFetch(apiConfig.category.autocomplete);
@@ -19,22 +20,27 @@ const NewsListPage = () => {
             objectName: 'News',
         },
         override: (funcs) => {
-           
+            // console.log("liscategory",listcategory);
             funcs.mappingData = (response) => {                                            
                 if (response.result === true) {                                     
                     return {
+                        // data: response.data.data.map(obj1 => {
+                        //     const obj2= listcategory.data.find(obj2 => obj2.id === obj1.categoryId);
+                        //     return { id: obj1.id, categoryId: obj1.categoryId, categoryName: obj2.categoryName, ...obj1 };
+                        // }),
                         data: response.data.data,
                         total: response.data.totalElements,                                            
                     };
                 }
             };
+           
         },
     });
     const listStatus=[ { value:STATUS_PENDING , label:"Pending" },  { value:STATUS_ACTIVE , label:"Active" },  { value:STATUS_DELETE , label:"Delete" },  { value:STATUS_INACTIVE , label:"Inactive" }  ];
     
     let updatedListcategory=[];
     if(listcategory.data){
-        updatedListcategory = listcategory?.data.map(({ id: value, categoryName: label }) => ({ value, label }));       
+        updatedListcategory = listcategory?.data.map(({ categoryName: value, categoryName: label }) => ({ value, label })); 
     }
     // mergedArray 
     // let mergedArray=[];
@@ -73,9 +79,9 @@ const NewsListPage = () => {
             ),
         },
         { title: 'title', dataIndex: 'title' },
-        { title: 'Category',align: "center", dataIndex: 'categoryId', render:(categoryId) => (handleCategoryName(categoryId)) },     
-        { title: 'Created Date', dataIndex: 'createdDate', width: '130px' },
-        { title: 'Pin top',align: "center", dataIndex: 'pinTop', width: '200px', render:(pinTop) => ( pinTop==1 ? ( <PushpinOutlined/> ) : 0 )  },
+        { title: 'Category',align: "center", dataIndex: 'categoryId', render:(categoryId) => (handleCategoryName(categoryId)), width:"150px" },     
+        { title: 'Created Date', dataIndex: 'createdDate', width:"200px", align:"center", color:"red" },
+        { title: 'Pin top',align: "center", dataIndex: 'pinTop', width: '90px', render:(pinTop) => ( pinTop==1 ? ( <IconPin size={"18px"}/> ) : (<IconPinnedOff size={"18px"}/>) )  },
         mixinFuncs.renderStatusColumn({ width: '90px' }),
         mixinFuncs.renderActionColumn({ edit: true, delete: true }, { width: '90px' }),
     ];
@@ -95,17 +101,19 @@ const NewsListPage = () => {
         },
         {   
             type:"SELECT", 
-            key: "categoryId",
+            key: "categoryName",
             placeholder: 'Category',
             options:  updatedListcategory ,
-            optionValue: 'value',
             optionLabelProp: "label",
+            optionValue: 'value',
         },
     ];
     useEffect(() => {
         executeCategory({
             onCompleted: (respone) => {
-                if (respone.result===true) setListCategory(respone.data);
+                if (respone.result===true){ 
+                    setListCategory(respone.data);
+                } 
             },          
         });
     },[]);

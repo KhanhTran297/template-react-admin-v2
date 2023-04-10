@@ -18,7 +18,6 @@ function CheckboxField({
     ...props
 }) {
     const { rules } = useFormField(props);
-    console.log(onChange);
     return (
         <Form.Item
             {...formItemProps}

@@ -1,7 +1,7 @@
 import ListPage from '@components/common/layout/ListPage';
 import PageWrapper from '@components/common/layout/PageWrapper';
 import BaseTable from '@components/common/table/BaseTable';
-import { AppConstants, DEFAULT_TABLE_ITEM_SIZE } from '@constants';
+import { AppConstants, DEFAULT_TABLE_ITEM_SIZE, STATUS_ACTIVE, STATUS_DELETE, STATUS_INACTIVE, STATUS_PENDING } from '@constants';
 import apiConfig from '@constants/apiConfig';
 import useListBase from '@hooks/useListBase';
 import { Avatar } from 'antd';
@@ -27,7 +27,7 @@ const CategoryListPage = () => {
             };
         },
     });
-
+    const listStatus=[ { value:STATUS_PENDING , label:"Pending" },  { value:STATUS_ACTIVE , label:"Active" },  { value:STATUS_DELETE , label:"Delete" },  { value:STATUS_INACTIVE , label:"Inactive" }  ];
     const columns = [
         {
             title: '#',
@@ -46,12 +46,22 @@ const CategoryListPage = () => {
             title: 'Name',
             dataIndex: 'categoryName',
         },
+        mixinFuncs.renderStatusColumn({ width:"90px" }),
         mixinFuncs.renderActionColumn({ edit: true, delete: true }, { width: '90px' }),
     ];
     const searchFields = [
         {
             key: 'Name',
             placeholder: 'Name',
+        },
+        {   
+            type:"SELECT", 
+            key: "status",
+            placeholder: 'Status',
+            options:  listStatus ,
+            optionValue: 'value',
+            optionLabelProp: "label",
+           
         },
     ];
     return (

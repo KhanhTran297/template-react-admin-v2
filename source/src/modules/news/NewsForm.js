@@ -23,6 +23,7 @@ const NewsForm = (props) => {
         onSubmit,
         setIsChangedFormValues,
     });
+    console.log("datadetail",dataDetail);
     const listStatus=[ { value:STATUS_PENDING , label:"Pending" },  { value:STATUS_ACTIVE , label:"Active" },  { value:STATUS_DELETE , label:"Delete" },  { value:STATUS_INACTIVE , label:"Inactive" }  ];
     // let datalist=[];
     const uploadFile = (file, onSuccess, onError) => {
@@ -33,10 +34,11 @@ const NewsForm = (props) => {
                
             },
             onCompleted: (response) => {
-                console.log(response);
+                console.log(response.data.filePath);
                 if (response.result === true) {
                     onSuccess();
                     setImageUrl(response.data.filePath);
+                    
                 }
             },
             onError: (error) => {
@@ -75,7 +77,6 @@ const NewsForm = (props) => {
             setDataCheckBox(dataCheckBox => dataCheckBox=0); 
         }      
     };
-    console.log("DatacheckBox",dataCheckBox);
     let updatedListcategory=[];
     if(listcategory.data){
         updatedListcategory = listcategory?.data.map(({ id: value, categoryName: label }) => ({ value, label }));
@@ -85,6 +86,7 @@ const NewsForm = (props) => {
             ...dataDetail,
         });
         setImageUrl(dataDetail.avatar);
+        setImageUrl1(dataDetail.banner);
     }, [ dataDetail ]);
     return (
         <Form
@@ -113,6 +115,7 @@ const NewsForm = (props) => {
                             imageUrl={imageUrl1 && `${AppConstants.contentRootUrl}${imageUrl1}`}
                             aspect={16 / 9}
                             uploadFile={uploadFile1}
+                            
                         />
                     </Col>
                 </Row>
@@ -135,14 +138,17 @@ const NewsForm = (props) => {
                 </Row>  
                 <Row gutter={16}>                    
                     {/* <TextField label="Pin Top"  name="pinTop" type="checkbox" />                     */}
-                    <CheckboxField optionLabel="Pin Top" name="pinTop" onChange={handleValueCheckBox}/>
+                    <Col span={12}>
+                        <CheckboxField optionLabel="Pin Top" name="pinTop" onChange={handleValueCheckBox}/>
+                    </Col>
+                    
                     {/* <RadioField name="pinTop" label="Pin Top"/> */}
                     
                 </Row>          
                 <Row gutter={16}>
-                                     
-                    <RichTextField label='Content' required name="content"   ></RichTextField>
-                    
+                    <Col span={24}>
+                        <RichTextField label='Content' required name="content"   ></RichTextField>
+                    </Col>                            
                 </Row>
               
                 <div className="footer-card-form">{actions}</div>

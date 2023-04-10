@@ -17,6 +17,7 @@ const BaseTable = ({ dataSource, onChange, rowSelection, columns, loading, pagin
         {...props}
         className={classNames(styles.baseTable, props.className)}
         pagination={pagination ? { ...pagination, showSizeChanger: false, hideOnSinglePage: true } : false}
+        rowClassName={(record, index) => index % 2 === 0 ? styles.evenRow : styles.oddRow}
     />
 );
 
