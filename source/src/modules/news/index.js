@@ -3,7 +3,7 @@ import apiConfig from '@constants/apiConfig';
 import useListBase from '@hooks/useListBase';
 import { Avatar } from 'antd';
 import BaseTable from '@components/common/table/BaseTable';
-import { UserOutlined, PushpinOutlined } from '@ant-design/icons';
+import { UserOutlined } from '@ant-design/icons';
 import { AppConstants, DEFAULT_TABLE_ITEM_SIZE, STATUS_ACTIVE, STATUS_DELETE, STATUS_INACTIVE, STATUS_PENDING } from '@constants';
 import PageWrapper from '@components/common/layout/PageWrapper';
 import ListPage from '@components/common/layout/ListPage';
@@ -31,7 +31,6 @@ const NewsListPage = () => {
            
         },
         dataCategory:rawlistcategory,
-        // dataCategory:[ { id:1,categoryName:"Technology" } ],
         dataStatus:[ { value:STATUS_PENDING , label:"Pending" },  { value:STATUS_ACTIVE , label:"Active" },  { value:STATUS_DELETE , label:"Delete" },  { value:STATUS_INACTIVE , label:"Inactive" }  ],
     });
     const listStatus=[ { value:"Pending" , label:"Pending" },  { value:"Active" , label:"Active" },  { value:"Delete" , label:"Delete" },  { value:"Inactive" , label:"Inactive" }  ];
