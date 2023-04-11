@@ -11,8 +11,8 @@ import useFetch from '@hooks/useFetch';
 import { IconPinnedOff, IconPin } from '@tabler/icons-react';
 const NewsListPage = () => {
     const [ listcategory, setListCategory ] = useState([]);
+    const [ rawlistcategory, setRawListCategory ] = useState([]);
     const { execute:executeCategory, data:dataCategory }=useFetch(apiConfig.category.autocomplete);
-    let mainListdatacategory=[];
     const { data, mixinFuncs, queryFilter, loading, pagination } = useListBase({
         apiConfig: apiConfig.news,
         options: {
@@ -20,14 +20,9 @@ const NewsListPage = () => {
             objectName: 'News',
         },
         override: (funcs) => {
-            // console.log("liscategory",listcategory);
             funcs.mappingData = (response) => {                                            
                 if (response.result === true) {                                     
                     return {
-                        // data: response.data.data.map(obj1 => {
-                        //     const obj2= listcategory.data.find(obj2 => obj2.id === obj1.categoryId);
-                        //     return { id: obj1.id, categoryId: obj1.categoryId, categoryName: obj2.categoryName, ...obj1 };
-                        // }),
                         data: response.data.data,
                         total: response.data.totalElements,                                            
                     };
@@ -35,13 +30,11 @@ const NewsListPage = () => {
             };
            
         },
+        dataCategory:rawlistcategory,
+        // dataCategory:[ { id:1,categoryName:"Technology" } ],
+        dataStatus:[ { value:STATUS_PENDING , label:"Pending" },  { value:STATUS_ACTIVE , label:"Active" },  { value:STATUS_DELETE , label:"Delete" },  { value:STATUS_INACTIVE , label:"Inactive" }  ],
     });
-    const listStatus=[ { value:STATUS_PENDING , label:"Pending" },  { value:STATUS_ACTIVE , label:"Active" },  { value:STATUS_DELETE , label:"Delete" },  { value:STATUS_INACTIVE , label:"Inactive" }  ];
-    
-    let updatedListcategory=[];
-    if(listcategory.data){
-        updatedListcategory = listcategory?.data.map(({ categoryName: value, categoryName: label }) => ({ value, label })); 
-    }
+    const listStatus=[ { value:"Pending" , label:"Pending" },  { value:"Active" , label:"Active" },  { value:"Delete" , label:"Delete" },  { value:"Inactive" , label:"Inactive" }  ];
     // mergedArray 
     // let mergedArray=[];
     // if(listcategory.data){
@@ -53,15 +46,12 @@ const NewsListPage = () => {
     // }
     // console.log("mergedArray", mergedArray);
     const handleCategoryName = (id) => {
-        let categoryname="";
-        if(listcategory.data){
-            listcategory.data.map((item) => {
-                if(id==item.id){
-                    categoryname=item.categoryName;
-                }
-            });
-        }
-       
+        let categoryname="";        
+        rawlistcategory.map((item) => {
+            if(id==item.id){
+                categoryname=item.categoryName;
+            }
+        });
         return categoryname;
     };
     const columns = [
@@ -85,7 +75,7 @@ const NewsListPage = () => {
         mixinFuncs.renderStatusColumn({ width: '90px' }),
         mixinFuncs.renderActionColumn({ edit: true, delete: true }, { width: '90px' }),
     ];
-
+    console.log("listCategory", listcategory);
     const searchFields = [
         {
             key: 'title',
@@ -101,9 +91,9 @@ const NewsListPage = () => {
         },
         {   
             type:"SELECT", 
-            key: "categoryName",
+            key: "categoryId",
             placeholder: 'Category',
-            options:  updatedListcategory ,
+            options:  listcategory ,
             optionLabelProp: "label",
             optionValue: 'value',
         },
@@ -112,7 +102,8 @@ const NewsListPage = () => {
         executeCategory({
             onCompleted: (respone) => {
                 if (respone.result===true){ 
-                    setListCategory(respone.data);
+                    setRawListCategory(respone.data.data);
+                    setListCategory(respone.data.data.map(({ categoryName: value, categoryName: label }) => ({ value, label })));
                 } 
             },          
         });

@@ -69,7 +69,11 @@ const useListBase = ({
         pageSize: DEFAULT_TABLE_ITEM_SIZE,
     },
     override,
+    dataCategory=[],
+    dataStatus=[],
+
 } = {}) => {
+    // const [ listcategory, setListCategory ]=useState([]);
     const { params: queryParams, setQueryParams, serializeParams, deserializeParams } = useQueryParams();
     const [ data, setData ] = useState(0);
     const [ loading, setLoading ] = useState(false);
@@ -80,11 +84,13 @@ const useListBase = ({
         total: 0,
         current: 1,
     });
+    // console.log("akey", que );
+    // console.log("datacategory",dataCategory);
     const notification = useNotification();
     const { pathname: pagePath } = useLocation();
 
     const intl = useIntl();
-
+    console.log("queryParamssss",queryParams);
     const queryFilter = useMemo(() => deserializeParams(queryParams), [ queryParams ]);
 
     const hasPermission = (permission) => {
@@ -109,6 +115,30 @@ const useListBase = ({
     const handleFetchList = (params) => {
         if (!apiConfig.getList) throw new Error('apiConfig.getList is not defined');
         setLoading(true);
+        if(params["categoryId"]){
+            dataCategory.map((item) => {
+                if(item.categoryName==params["categoryId"]){
+                    params["categoryId"]= item.id;
+                }
+            });
+            dataStatus.map((item) => {
+                if(item.label==params["status"]){
+                    params["status"]=item.value;
+                }
+            });
+        }
+        else if(params["status"]){
+            dataStatus.map((item) => {
+                if(item.label==params["status"]){
+                    params["status"]=item.value;
+                }
+            });
+            dataCategory.map((item) => {
+                if(item.categoryName==params["categoryId"]){
+                    params["categoryId"]=item.id;
+                }
+            });
+        }
         executeGetList({
             params,
             onCompleted: (response) => {
@@ -132,13 +162,49 @@ const useListBase = ({
 
         return copyFilter;
     };
-
-    const getList = () => {
+    // console.log("DataStatussssssssssssssssss",dataStatus);
+    // console.log("DataCategoryyyyyyyyyyyyyyyy",dataCategory);
+    const  getList = () => {
         if (!mixinFuncs.hasPermission('read')) return;
-
-        const params = mixinFuncs.prepareGetListParams(queryFilter);
-
-        mixinFuncs.handleFetchList({ ...params });
+        // let mergedArray=[];     
+        // mergedArray = data.map(obj1 => {
+        //     const obj2 = listcategory.data.find(obj2 => obj2.id === obj1.categoryId);
+        //     // return { id: obj1.id, categoryId: obj1.categoryId, categoryName: obj2.categoryName, avatar: obj1.avatar, banner: obj1.banner, createdBy: obj1.createdBy, createdDate: obj1.createdDate, kind: obj1.kind, modifiedBy: obj1.modifiedBy, modifiedDate: obj1.modifiedDate, pinTop: obj1.pinTop, ...obj1 };
+        //     return { id: obj1.id, categoryId: obj1.categoryId, categoryName: obj2.categoryName, ...obj1 };
+        // });
+        // console.log("queryFilter", queryFilter);
+        // if(queryFilter["categoryId"]){
+        //     dataCategory.map((item) => {
+        //         if(item.categoryName==queryFilter["categoryId"]){
+        //             queryFilter["categoryId"]= item.id;
+        //         }
+        //     });
+        //     dataStatus.map((item) => {
+        //         if(item.label==queryFilter["status"]){
+        //             queryFilter["status"]=item.value;
+        //         }
+        //     });
+        // }
+        // else if(queryFilter["status"]){
+        //     dataStatus.map((item) => {
+        //         if(item.label==queryFilter["status"]){
+        //             queryFilter["status"]=item.value;
+        //         }
+        //     });
+        //     dataCategory.map((item) => {
+        //         if(item.categoryName==queryFilter["categoryId"]){
+        //             queryFilter["categoryId"]=item.id;
+        //         }
+        //     });
+        // }
+       
+       
+        // console.log("query filter",queryFilter['status']);
+        const params =  mixinFuncs.prepareGetListParams(queryFilter);
+        console.log("check cai nay di", dataCategory);
+        if(dataCategory.length>0){
+            mixinFuncs.handleFetchList({ ...params });
+        }
     };
 
     const changeFilter = (filter) => {
@@ -429,7 +495,6 @@ const useListBase = ({
 
         return centralizedHandler;
     };
-
     const mixinFuncs = overrideHandler();
 
     useEffect(() => {
@@ -441,7 +506,7 @@ const useListBase = ({
         } else if (page < 1) {
             setPagination((p) => ({ ...p, current: 1 }));
         }
-    }, [ queryParams ]);
+    }, [ queryParams, dataCategory ]);
 
     return {
         loading,
