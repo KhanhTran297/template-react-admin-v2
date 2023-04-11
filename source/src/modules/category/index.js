@@ -5,10 +5,13 @@ import { AppConstants, DEFAULT_TABLE_ITEM_SIZE, STATUS_ACTIVE, STATUS_DELETE, ST
 import apiConfig from '@constants/apiConfig';
 import useListBase from '@hooks/useListBase';
 import { Avatar } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { UserOutlined } from '@ant-design/icons';
+import useFetch from '@hooks/useFetch';
 
 const CategoryListPage = () => {
+    const [ rawlistcategory, setRawListCategory ] = useState([]);
+    const { execute:executeCategory, data:dataCategory }=useFetch(apiConfig.category.autocomplete);
     const { data, mixinFuncs, queryFilter, loading, pagination } = useListBase({
         apiConfig: apiConfig.category,
         options: {
@@ -26,8 +29,10 @@ const CategoryListPage = () => {
                 }
             };
         },
+        dataCategory:rawlistcategory,
+        dataStatus:[ { value:STATUS_PENDING , label:"Pending" },  { value:STATUS_ACTIVE , label:"Active" },  { value:STATUS_DELETE , label:"Delete" },  { value:STATUS_INACTIVE , label:"Inactive" }  ],
     });
-    const listStatus=[ { value:STATUS_PENDING , label:"Pending" },  { value:STATUS_ACTIVE , label:"Active" },  { value:STATUS_DELETE , label:"Delete" },  { value:STATUS_INACTIVE , label:"Inactive" }  ];
+    const listStatus=[ { value:"Pending" , label:"Pending" },  { value:"Active" , label:"Active" },  { value:"Delete" , label:"Delete" },  { value:"Inactive" , label:"Inactive" }  ];
     const columns = [
         {
             title: '#',
@@ -64,6 +69,15 @@ const CategoryListPage = () => {
            
         },
     ];
+    useEffect(() => {
+        executeCategory({
+            onCompleted: (respone) => {
+                if (respone.result===true){ 
+                    setRawListCategory(respone.data.data);
+                } 
+            },          
+        });
+    },[]);
     return (
         <PageWrapper routes={[ { breadcrumbName: 'Home' }, { breadcrumbName: 'category' } ]}>
             <ListPage

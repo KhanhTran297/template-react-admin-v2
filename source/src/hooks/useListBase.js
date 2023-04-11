@@ -164,9 +164,12 @@ const useListBase = ({
         if (!mixinFuncs.hasPermission('read')) return;
        
         const params =  mixinFuncs.prepareGetListParams(queryFilter);
+       
         if(dataCategory.length>0){
             mixinFuncs.handleFetchList({ ...params });
         }
+        
+        
     };
 
     const changeFilter = (filter) => {

@@ -1,15 +1,18 @@
 import apiConfig from '@constants/apiConfig';
 import useListBase from '@hooks/useListBase';
 import { Avatar } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import BaseTable from '@components/common/table/BaseTable';
 
 import { UserOutlined } from '@ant-design/icons';
 import { AppConstants, DEFAULT_TABLE_ITEM_SIZE } from '@constants';
 import PageWrapper from '@components/common/layout/PageWrapper';
 import ListPage from '@components/common/layout/ListPage';
+import useFetch from '@hooks/useFetch';
 
 const UserAdminListPage = () => {
+    const [ rawlistcategory, setRawListCategory ] = useState([]);
+    const { execute:executeCategory, data:dataCategory }=useFetch(apiConfig.category.autocomplete);
     const { data, mixinFuncs, queryFilter, loading, pagination } = useListBase({
         apiConfig: apiConfig.user,
         options: {
@@ -26,6 +29,7 @@ const UserAdminListPage = () => {
                 }
             };
         },
+        dataCategory:rawlistcategory,
     });
 
     const columns = [
@@ -66,7 +70,15 @@ const UserAdminListPage = () => {
             placeholder: 'Full name',
         },
     ];
-
+    useEffect(() => {
+        executeCategory({
+            onCompleted: (respone) => {
+                if (respone.result===true){ 
+                    setRawListCategory(respone.data.data);
+                } 
+            },          
+        });
+    },[]);
     return (
         <PageWrapper routes={[ { breadcrumbName: 'Home' }, { breadcrumbName: 'User Admin' } ]}>
             <ListPage
