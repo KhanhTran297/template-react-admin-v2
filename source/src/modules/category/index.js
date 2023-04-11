@@ -30,9 +30,9 @@ const CategoryListPage = () => {
             };
         },
         dataCategory:rawlistcategory,
-        dataStatus:[ { value:STATUS_PENDING , label:"Pending" },  { value:STATUS_ACTIVE , label:"Active" },  { value:STATUS_DELETE , label:"Delete" },  { value:STATUS_INACTIVE , label:"Inactive" }  ],
+        dataStatus:[  { value:STATUS_ACTIVE , label:"Active" },   { value:STATUS_INACTIVE , label:"Lock" }  ],
     });
-    const listStatus=[ { value:"Pending" , label:"Pending" },  { value:"Active" , label:"Active" },  { value:"Delete" , label:"Delete" },  { value:"Inactive" , label:"Inactive" }  ];
+    const listStatus=[   { value:"Active" , label:"Active" },  { value:"Lock" , label:"Lock" }  ];
     const columns = [
         {
             title: '#',
