@@ -73,7 +73,6 @@ const useListBase = ({
     dataStatus=[],
 
 } = {}) => {
-    // const [ listcategory, setListCategory ]=useState([]);
     const { params: queryParams, setQueryParams, serializeParams, deserializeParams } = useQueryParams();
     const [ data, setData ] = useState(0);
     const [ loading, setLoading ] = useState(false);
@@ -84,13 +83,11 @@ const useListBase = ({
         total: 0,
         current: 1,
     });
-    // console.log("akey", que );
-    // console.log("datacategory",dataCategory);
     const notification = useNotification();
     const { pathname: pagePath } = useLocation();
 
     const intl = useIntl();
-    console.log("queryParamssss",queryParams);
+   
     const queryFilter = useMemo(() => deserializeParams(queryParams), [ queryParams ]);
 
     const hasPermission = (permission) => {
@@ -162,46 +159,11 @@ const useListBase = ({
 
         return copyFilter;
     };
-    // console.log("DataStatussssssssssssssssss",dataStatus);
-    // console.log("DataCategoryyyyyyyyyyyyyyyy",dataCategory);
+   
     const  getList = () => {
         if (!mixinFuncs.hasPermission('read')) return;
-        // let mergedArray=[];     
-        // mergedArray = data.map(obj1 => {
-        //     const obj2 = listcategory.data.find(obj2 => obj2.id === obj1.categoryId);
-        //     // return { id: obj1.id, categoryId: obj1.categoryId, categoryName: obj2.categoryName, avatar: obj1.avatar, banner: obj1.banner, createdBy: obj1.createdBy, createdDate: obj1.createdDate, kind: obj1.kind, modifiedBy: obj1.modifiedBy, modifiedDate: obj1.modifiedDate, pinTop: obj1.pinTop, ...obj1 };
-        //     return { id: obj1.id, categoryId: obj1.categoryId, categoryName: obj2.categoryName, ...obj1 };
-        // });
-        // console.log("queryFilter", queryFilter);
-        // if(queryFilter["categoryId"]){
-        //     dataCategory.map((item) => {
-        //         if(item.categoryName==queryFilter["categoryId"]){
-        //             queryFilter["categoryId"]= item.id;
-        //         }
-        //     });
-        //     dataStatus.map((item) => {
-        //         if(item.label==queryFilter["status"]){
-        //             queryFilter["status"]=item.value;
-        //         }
-        //     });
-        // }
-        // else if(queryFilter["status"]){
-        //     dataStatus.map((item) => {
-        //         if(item.label==queryFilter["status"]){
-        //             queryFilter["status"]=item.value;
-        //         }
-        //     });
-        //     dataCategory.map((item) => {
-        //         if(item.categoryName==queryFilter["categoryId"]){
-        //             queryFilter["categoryId"]=item.id;
-        //         }
-        //     });
-        // }
        
-       
-        // console.log("query filter",queryFilter['status']);
         const params =  mixinFuncs.prepareGetListParams(queryFilter);
-        console.log("check cai nay di", dataCategory);
         if(dataCategory.length>0){
             mixinFuncs.handleFetchList({ ...params });
         }

@@ -75,7 +75,6 @@ const NewsListPage = () => {
         mixinFuncs.renderStatusColumn({ width: '90px' }),
         mixinFuncs.renderActionColumn({ edit: true, delete: true }, { width: '90px' }),
     ];
-    console.log("listCategory", listcategory);
     const searchFields = [
         {
             key: 'title',

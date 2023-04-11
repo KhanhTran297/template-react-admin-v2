@@ -14,7 +14,7 @@ const useQueryParams = () => {
             if(object[key] !== undefined && object[key] !== '')
                 params.set(key, object[key]);
         });
-        console.log("paramsssssssssssss",params);
+       
         return params;
     };
 
@@ -34,7 +34,7 @@ const useQueryParams = () => {
     };
 
     const setQueryParams = (queryObj) => {
-        console.log("queryObj",queryObj);
+        
         setSearchParams(queryObj);
     };
 
