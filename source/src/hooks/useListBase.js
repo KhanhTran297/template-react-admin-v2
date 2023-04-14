@@ -69,9 +69,7 @@ const useListBase = ({
         pageSize: DEFAULT_TABLE_ITEM_SIZE,
     },
     override,
-    dataCategory=[],
-    dataStatus=[],
-
+    listdataCategory=[],
 } = {}) => {
     const { params: queryParams, setQueryParams, serializeParams, deserializeParams } = useQueryParams();
     const [ data, setData ] = useState(0);
@@ -89,7 +87,7 @@ const useListBase = ({
     const intl = useIntl();
    
     const queryFilter = useMemo(() => deserializeParams(queryParams), [ queryParams ]);
-
+    // console.log(queryFilter);
     const hasPermission = (permission) => {
         return true;
     };
@@ -104,7 +102,6 @@ const useListBase = ({
 
     const onCompletedGetList = (response) => {
         const { data, total } = mixinFuncs.mappingData(response);
-
         setData(data);
         setPagination((p) => ({ ...p, total }));
     };
@@ -112,30 +109,6 @@ const useListBase = ({
     const handleFetchList = (params) => {
         if (!apiConfig.getList) throw new Error('apiConfig.getList is not defined');
         setLoading(true);
-        if(params["categoryId"]){
-            dataCategory.map((item) => {
-                if(item.categoryName==params["categoryId"]){
-                    params["categoryId"]= item.id;
-                }
-            });
-            dataStatus.map((item) => {
-                if(item.label==params["status"]){
-                    params["status"]=item.value;
-                }
-            });
-        }
-        else if(params["status"]){
-            dataStatus.map((item) => {
-                if(item.label==params["status"]){
-                    params["status"]=item.value;
-                }
-            });
-            dataCategory.map((item) => {
-                if(item.categoryName==params["categoryId"]){
-                    params["categoryId"]=item.id;
-                }
-            });
-        }
         executeGetList({
             params,
             onCompleted: (response) => {
@@ -164,15 +137,23 @@ const useListBase = ({
         if (!mixinFuncs.hasPermission('read')) return;
        
         const params =  mixinFuncs.prepareGetListParams(queryFilter);
+        console.log("params",params);
        
-        if(dataCategory.length>0){
-            mixinFuncs.handleFetchList({ ...params });
-        }
+        mixinFuncs.handleFetchList({ ...params });
+       
         
         
     };
 
     const changeFilter = (filter) => {
+        // console.log("filter",filter);
+        // // console.log(listdataCategory);
+        // listdataCategory.forEach(category => {
+        //     console.log("name",category.categoryName);
+        //     if(category.categoryName==filter.categoryId){
+        //         filter.categoryId=category.id;
+        //     }
+        // });
         setQueryParams(serializeParams(filter));
     };
 
@@ -471,7 +452,7 @@ const useListBase = ({
         } else if (page < 1) {
             setPagination((p) => ({ ...p, current: 1 }));
         }
-    }, [ queryParams, dataCategory ]);
+    }, [ queryParams ]);
 
     return {
         loading,

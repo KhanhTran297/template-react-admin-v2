@@ -25,9 +25,10 @@ const message = defineMessages({
 function SearchForm({ fields = [], hiddenAction, onSearch, className, onReset, initialValues }) {
     const [ form ] = Form.useForm();
     const intl = useIntl();
-
+    let valueBack="";
     const handleSearchSubmit = useCallback(
         (values) => {
+            valueBack=values;
             onSearch?.(values);
         },
         [ form, onSearch ],
@@ -55,16 +56,16 @@ function SearchForm({ fields = [], hiddenAction, onSearch, className, onReset, i
     );
 
     useEffect(() => {
-        form.setFieldsValue(initialValues);
+        form.setFieldsValue(valueBack);
     }, [ initialValues ]);
 
     return (
         <Form form={form} layout="horizontal" className={className || styles.searchForm} onFinish={handleSearchSubmit}>
-            <Row gutter={10}>
+            <Row gutter={10} >
                 {fields.map((field) => {
                     const { key, colSpan, className, ...props } = field;
                     return (
-                        <Col key={key} span={(colSpan || 1) * 5} className={className}>
+                        <Col key={key} span={(colSpan || 1) * 3} className={className}>
                             {renderField({ ...props, key })}
                         </Col>
                     );

@@ -10,8 +10,7 @@ import { UserOutlined } from '@ant-design/icons';
 import useFetch from '@hooks/useFetch';
 
 const CategoryListPage = () => {
-    const [ rawlistcategory, setRawListCategory ] = useState([]);
-    const { execute:executeCategory, data:dataCategory }=useFetch(apiConfig.category.autocomplete);
+   
     const { data, mixinFuncs, queryFilter, loading, pagination } = useListBase({
         apiConfig: apiConfig.category,
         options: {
@@ -29,10 +28,8 @@ const CategoryListPage = () => {
                 }
             };
         },
-        dataCategory:rawlistcategory,
-        dataStatus:[  { value:STATUS_ACTIVE , label:"Active" },   { value:STATUS_INACTIVE , label:"Lock" }  ],
     });
-    const listStatus=[   { value:"Active" , label:"Active" },  { value:"Lock" , label:"Lock" }  ];
+    const listStatus=[   { value:STATUS_ACTIVE , label:"Active" },  { value:STATUS_INACTIVE , label:"Lock" }  ];
     const columns = [
         {
             title: '#',
@@ -69,15 +66,7 @@ const CategoryListPage = () => {
            
         },
     ];
-    useEffect(() => {
-        executeCategory({
-            onCompleted: (respone) => {
-                if (respone.result===true){ 
-                    setRawListCategory(respone.data.data);
-                } 
-            },          
-        });
-    },[]);
+    
     return (
         <PageWrapper routes={[ { breadcrumbName: 'Home' }, { breadcrumbName: 'category' } ]}>
             <ListPage

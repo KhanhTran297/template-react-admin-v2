@@ -30,10 +30,10 @@ const NewsListPage = () => {
             };
            
         },
-        dataCategory:rawlistcategory,
-        dataStatus:[ { value:STATUS_PENDING , label:"Pending" },  { value:STATUS_ACTIVE , label:"Active" },  { value:STATUS_DELETE , label:"Delete" },  { value:STATUS_INACTIVE , label:"Inactive" }  ],
+        listdataCategory:rawlistcategory,
     });
-    const listStatus=[ { value:"Pending" , label:"Pending" },  { value:"Active" , label:"Active" },  { value:"Delete" , label:"Delete" },  { value:"Inactive" , label:"Inactive" }  ];
+
+    const listStatus=[ { value:STATUS_PENDING , label:"Pending" },  { value:STATUS_ACTIVE , label:"Active" },  { value:STATUS_DELETE , label:"Delete" },  { value:STATUS_INACTIVE , label:"Inactive" }  ];
     // mergedArray 
     // let mergedArray=[];
     // if(listcategory.data){
@@ -44,6 +44,28 @@ const NewsListPage = () => {
     //     });
     // }
     // console.log("mergedArray", mergedArray);
+    // const categoryIdMap = {};
+    // rawlistcategory.forEach(category => {
+    //     categoryIdMap[category.id] = category.categoryName;
+    // });
+    // const listStatusIdMap={};
+    // listStatus.forEach(status => {
+    //     listStatusIdMap[status.value]=status.label;
+    // });
+    // console.log("categoryIdMap",categoryIdMap);
+    // const updateQueryFilter = {};
+    // for (const [ key, value ] of Object.entries(queryFilter)) {
+    //     if (key === 'categoryId' && categoryIdMap[value]) {
+    //         updateQueryFilter[key] = categoryIdMap[value];
+    //     } 
+    //     else if( key === 'status' && listStatusIdMap[value] ){
+    //         updateQueryFilter[key] = listStatusIdMap[value];
+    //     }
+    //     // else {
+    //     //     updateQueryFilter[key] = value;
+    //     // }
+    // }
+    // console.log("updateQueryFilter",updateQueryFilter);
     const handleCategoryName = (id) => {
         let categoryname="";        
         rawlistcategory.map((item) => {
@@ -96,12 +118,15 @@ const NewsListPage = () => {
             optionValue: 'value',
         },
     ];
+   
     useEffect(() => {
         executeCategory({
             onCompleted: (respone) => {
                 if (respone.result===true){ 
                     setRawListCategory(respone.data.data);
-                    setListCategory(respone.data.data.map(({ categoryName: value, categoryName: label }) => ({ value, label })));
+                    setListCategory(respone.data.data.map(({ id: value, categoryName: label }) => ({ value, label })));
+                   
+                    // console.log(listcategory);
                 } 
             },          
         });

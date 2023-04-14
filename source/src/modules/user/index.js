@@ -11,8 +11,7 @@ import ListPage from '@components/common/layout/ListPage';
 import useFetch from '@hooks/useFetch';
 
 const UserAdminListPage = () => {
-    const [ rawlistcategory, setRawListCategory ] = useState([]);
-    const { execute:executeCategory, data:dataCategory }=useFetch(apiConfig.category.autocomplete);
+ 
     const { data, mixinFuncs, queryFilter, loading, pagination } = useListBase({
         apiConfig: apiConfig.user,
         options: {
@@ -29,7 +28,7 @@ const UserAdminListPage = () => {
                 }
             };
         },
-        dataCategory:rawlistcategory,
+       
     });
 
     const columns = [
@@ -70,15 +69,7 @@ const UserAdminListPage = () => {
             placeholder: 'Full name',
         },
     ];
-    useEffect(() => {
-        executeCategory({
-            onCompleted: (respone) => {
-                if (respone.result===true){ 
-                    setRawListCategory(respone.data.data);
-                } 
-            },          
-        });
-    },[]);
+   
     return (
         <PageWrapper routes={[ { breadcrumbName: 'Home' }, { breadcrumbName: 'User Admin' } ]}>
             <ListPage

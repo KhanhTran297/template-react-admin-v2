@@ -4,17 +4,19 @@ import useFetch from './useFetch';
 import apiConfig from '@constants/apiConfig';
 
 const useQueryParams = () => {
-    const { data , execute:executeCategory }=useFetch(apiConfig.category.autocomplete);
     let [ searchParams, setSearchParams ] = useSearchParams();
-    const [ akey, setAkey ]= useState();
     // return a URLSearchParams object
     const serializeParams = (object = {}) => {
         const params = new URLSearchParams();
-        Object.keys(object).forEach(key => {
-            if(object[key] !== undefined && object[key] !== '')
+        Object.keys(object).forEach((key) => {        
+            if (object[key] !== undefined && object[key] !== ''){
+                // console.log(object[key]);
+                // console.log(key);
+                // console.log(object);
                 params.set(key, object[key]);
+            }
         });
-       
+
         return params;
     };
 
@@ -22,19 +24,14 @@ const useQueryParams = () => {
     const deserializeParams = (params) => {
         const object = {};
         params.forEach((value, key) => {
-            if(value !== undefined && value !== '')
-                // if(value=="Technology"){
-                //     object[key] = 1;
-                // }     
-                object[key]=value;   
-                        
+            if (value !== undefined && value !== '') 
+                object[key] = value;
         });
 
         return object;
     };
 
     const setQueryParams = (queryObj) => {
-        
         setSearchParams(queryObj);
     };
 
