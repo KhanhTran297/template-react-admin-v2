@@ -104,7 +104,7 @@ const NewsListPage = () => {
         {   
             type:"SELECT", 
             key: "status",
-            placeholder: 'Status',
+            placeholder: 'Select status',
             options:  listStatus ,
             optionValue: 'value',
             optionLabelProp: "label",
@@ -112,7 +112,7 @@ const NewsListPage = () => {
         {   
             type:"SELECT", 
             key: "categoryId",
-            placeholder: 'Category',
+            placeholder: 'Select category',
             options:  listcategory ,
             optionLabelProp: "label",
             optionValue: 'value',

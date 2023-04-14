@@ -59,7 +59,7 @@ const CategoryListPage = () => {
         {   
             type:"SELECT", 
             key: "status",
-            placeholder: 'Status',
+            placeholder: 'Select status',
             options:  listStatus ,
             optionValue: 'value',
             optionLabelProp: "label",
