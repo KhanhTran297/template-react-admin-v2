@@ -35,7 +35,6 @@ const CategoryForm = (props) => {
     const handleSubmit = (values) => {
         return mixinFuncs.handleSubmit({ ...values, categoryImage: imageUrl });
     };
-    console.log(formId);
     useEffect(() => {
         form.setFieldsValue({
             ...dataDetail,
