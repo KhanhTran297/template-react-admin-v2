@@ -1,6 +1,5 @@
 import CategoryListPage from ".";
 import CategoryChildListbase from "./CategoryChildListPage";
-import CategoryChildPage from "./CategoryChildPage";
 import CategoryChildSavePage from "./CategoryChildSavePage";
 import CategorySavePage from "./CategorySavePage";
 export default {

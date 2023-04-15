@@ -14,8 +14,10 @@ const CategoryChildListbase = () => {
     const baseHeader = {
         'Content-Type': 'application/json',
     };
+    //parentId
     const { id }=useParams();
     const { data, mixinFuncs, queryFilter, loading, pagination } = useListBase({
+        //modify lại hàn getList cho các category child
         apiConfig: {
             getList: {
                 baseURL: `${apiUrl}v1/category/list?parentId=${id}`,

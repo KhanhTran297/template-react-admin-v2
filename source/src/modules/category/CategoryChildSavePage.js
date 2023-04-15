@@ -8,7 +8,6 @@ import { useParams } from 'react-router-dom';
 import CategoryForm from './CategoryForm';
 const CategoryChildSavePage = () => {
     const { parentid,id } = useParams();
-    // console.log("LastId",params1);
     const { detail, mixinFuncs, loading, onSave, setIsChangedFormValues, isEditing, title } = useSaveBase({
         apiConfig: {
             getDetail: apiConfig.category.getById,
@@ -21,7 +20,6 @@ const CategoryChildSavePage = () => {
         },
         override: (funcs) => {
             funcs.prepareUpdateData = (data) => {
-                // console.log(data);
                 return {
                     status: STATUS_ACTIVE,
                     kind: categoryKind.news,
@@ -44,7 +42,6 @@ const CategoryChildSavePage = () => {
             };
 
             funcs.mappingData = (data) => {
-                // console.log(data);
                 return {
                     ...data.data,
                 };

@@ -33,7 +33,6 @@ const CategoryForm = (props) => {
         });
     };
     const handleSubmit = (values) => {
-        console.log(values);
         return mixinFuncs.handleSubmit({ ...values, categoryImage: imageUrl });
     };
     console.log(formId);
