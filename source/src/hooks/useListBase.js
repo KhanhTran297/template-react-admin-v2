@@ -88,7 +88,7 @@ const useListBase = ({
     const intl = useIntl();
    
     const queryFilter = useMemo(() => deserializeParams(queryParams), [ queryParams ]);
-    // console.log(queryFilter);
+    console.log(queryFilter);
     const hasPermission = (permission) => {
         return true;
     };
@@ -298,7 +298,8 @@ const useListBase = ({
                 <Link
                     
                     to={mixinFuncs.getParentItemDetailLink(dataRow)}
-                    state={{ action: 'view', prevPath: location.pathname }}
+                    
+                    state={{ action: 'view', prevPath:"" }}
                 >
                     <Button {...buttonProps} type="link" style={{ padding: 0 }}>
                         <EyeOutlined color="red" />
@@ -308,7 +309,7 @@ const useListBase = ({
         },
         ...additionalButtons,
     });
-
+    console.log(location.pathname);
     const createActionColumnButtons = (actions) => {
         const actionButtons = [];
         const buttons = actionColumnButtons(mixinFuncs.additionalActionColumnButtons());
@@ -371,11 +372,15 @@ const useListBase = ({
             ),
         };
     };
-
+    // var haha=pagePath.slice()
+    // console.log("pagePath",pagePath);
     const getItemDetailLink = (dataRow) => {
         return `${pagePath}/${dataRow.id}`;
     };
     const getParentItemDetailLink = (dataRow) => {
+        // var id={ categoryId:dataRow.id };
+        // console.log("id",mixinFuncs.changeFilter(id));
+        // return mixinFuncs.changeFilter(id);
         return `${pagePath}/child/${dataRow.id}`;
     };
 

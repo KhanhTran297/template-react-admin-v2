@@ -17,23 +17,22 @@ const CategorySavePage = () => {
         },
         options: {
             getListUrl: `/category`,
-            objectName: 'category',
+            objectName: 'Category',
         },
         override: (funcs) => {
             funcs.prepareUpdateData = (data) => {
                 // console.log(data);
                 return {
+                    ...data,
                     status: STATUS_ACTIVE,
-                    kind: categoryKind.news,
                     avatarPath: data.avatar,
                     categoryDescription:data.categoryDescription,
                     categoryName: data.categoryName,
                     id: id,
-                    ...data,
+                    
                 };
             };
-            funcs.prepareCreateData = (data) => {
-                
+            funcs.prepareCreateData = (data) => {           
                 return {
                     ...data,
                     categoryKind: categoryKind.news,
@@ -43,8 +42,7 @@ const CategorySavePage = () => {
                 };
             };
 
-            funcs.mappingData = (data) => {
-                
+            funcs.mappingData = (data) => {     
                 return {
                     ...data.data,
                 };
