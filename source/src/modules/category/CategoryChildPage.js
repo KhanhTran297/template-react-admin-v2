@@ -6,17 +6,17 @@ import useSaveBase from '@hooks/useSaveBase';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import CategoryForm from './CategoryForm';
-const CategorySavePage = () => {
+import CategoryChildForm from './CategoryChildListPage';
+const CategoryChildPage = () => {
     const { id } = useParams();
-
-    const { detail, mixinFuncs, loading, onSave, setIsChangedFormValues, isEditing, title } = useSaveBase({
+    const { detail, mixinFuncs, loading, onSave, setIsChangedFormValues, isEditing, title, detailId } = useSaveBase({
         apiConfig: {
             getDetail: apiConfig.category.getById,
             create: apiConfig.category.create,
             update: apiConfig.category.update,
         },
         options: {
-            getListUrl: `/category`,
+            getListUrl: `/category/child`,
             objectName: 'category',
         },
         override: (funcs) => {
@@ -26,50 +26,43 @@ const CategorySavePage = () => {
                     status: STATUS_ACTIVE,
                     kind: categoryKind.news,
                     avatarPath: data.avatar,
-                    categoryDescription:data.categoryDescription,
-                    categoryName: data.categoryName,
-                    id: id,
                     ...data,
+                    id: id,
                 };
             };
             funcs.prepareCreateData = (data) => {
-                
+                console.log(data);
                 return {
                     ...data,
                     categoryKind: categoryKind.news,
                     avatarPath: data.avatar,
-                    parentId: null,
+                    parentId: id,
                     categoryOrdering: 0,
                 };
             };
 
             funcs.mappingData = (data) => {
-                
+                // console.log(data);
                 return {
                     ...data.data,
                 };
             };
         },
     });
+    // console.log("detail",detail);
+    console.log("id",detailId);
     return (
         <PageWrapper
             loading={loading}
             routes={[
                 { breadcrumbName: 'Home' },
                 { breadcrumbName: 'category', path: `/category` },
-                { breadcrumbName: title },
+                { breadcrumbName: 'child' },
             ]}
         >
-            <CategoryForm
-                setIsChangedFormValues={setIsChangedFormValues}
-                dataDetail={detail ? detail : {}}
-                formId={mixinFuncs.getFormId()}
-                isEditing={isEditing}
-                actions={mixinFuncs.renderActions()}
-                onSubmit={onSave}
-            />
+            <CategoryChildForm parentId={id}></CategoryChildForm>
         </PageWrapper>
     );
 };
 
-export default CategorySavePage;
+export default CategoryChildPage;

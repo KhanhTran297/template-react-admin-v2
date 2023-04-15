@@ -94,7 +94,7 @@ const NewsListPage = () => {
         { title: 'Created Date', dataIndex: 'createdDate', width:"200px", align:"center", color:"red" },
         { title: 'Pin top',align: "center", dataIndex: 'pinTop', width: '90px', render:(pinTop) => ( pinTop==1 ? ( <IconPin size={"18px"}/> ) : (<IconPinnedOff size={"18px"}/>) )  },
         mixinFuncs.renderStatusColumn({ width: '90px' }),
-        mixinFuncs.renderActionColumn({ edit: true, delete: true }, { width: '90px' }),
+        mixinFuncs.renderActionColumn({ edit: true, delete: true }, { width: '100px' }),
     ];
     const searchFields = [
         {
@@ -125,14 +125,12 @@ const NewsListPage = () => {
                 if (respone.result===true){ 
                     setRawListCategory(respone.data.data);
                     setListCategory(respone.data.data.map(({ id: value, categoryName: label }) => ({ value, label })));
-                   
-                    // console.log(listcategory);
                 } 
             },          
         });
     },[]);
     return (
-        <PageWrapper routes={[ { breadcrumbName: 'Home' }, { breadcrumbName: 'News' } ]}>
+        <PageWrapper routes={[ { breadcrumbName: 'Home' }, { breadcrumbName: 'News', path:"/news" } ]}>
             <ListPage
                 searchForm={mixinFuncs.renderSearchForm({ fields: searchFields, initialValues: queryFilter  })}
                 actionBar={mixinFuncs.renderActionBar()}

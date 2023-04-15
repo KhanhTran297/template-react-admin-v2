@@ -1,4 +1,6 @@
+
 import NewsListPage from ".";
+
 import NewsSavePage from "./NewsSavePage";
 
 export default{

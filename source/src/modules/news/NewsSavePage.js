@@ -25,8 +25,9 @@ const NewsSavePage = () => {
                 return {
                     status: data.status,
                     kind: categoryKind.news,
-                    avatar: data.avatar,
-                    banner: data.banner,
+                    // avatar: data.avatar,
+                    // banner: data.banner,
+                    // description:data.description,
                     ...data,
                     id: id,
                 };

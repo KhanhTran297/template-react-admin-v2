@@ -34,7 +34,7 @@ const NewsForm = (props) => {
                
             },
             onCompleted: (response) => {
-                console.log(response.data.filePath);
+                
                 if (response.result === true) {
                     onSuccess();
                     setImageUrl(response.data.filePath);
@@ -54,7 +54,7 @@ const NewsForm = (props) => {
                
             },
             onCompleted: (response) => {
-                console.log(response);
+               
                 if (response.result === true) {
                     onSuccess();
                     setImageUrl1(response.data.filePath);
@@ -82,6 +82,7 @@ const NewsForm = (props) => {
         updatedListcategory = listcategory?.data.map(({ id: value, categoryName: label }) => ({ value, label }));
     }
     useEffect(() => {
+        console.log("readyyyyyy");
         form.setFieldsValue({
             ...dataDetail,
         });

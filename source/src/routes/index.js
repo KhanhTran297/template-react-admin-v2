@@ -57,7 +57,6 @@ const routes = {
         auth: true,
         title: 'Profile page',
     },
-    
     ...newsRoutes,
     ...adminsRoutes,
     ...categoryRoutes,

@@ -54,7 +54,7 @@ const useSaveBase = ({
     const intl = useIntl();
     const notification = useNotification();
     // const [ filter, setFilter ] = useState({});
-
+    // console.log("param",params);
     const mappingData = (response) => {
         if (response.result === true) return response.data;
     };
@@ -250,7 +250,7 @@ const useSaveBase = ({
         }
     }, []);
 
-    return { detail, mixinFuncs, loading, onSave, setIsChangedFormValues, isEditing, title };
+    return { detail, mixinFuncs, loading, onSave, setIsChangedFormValues, isEditing, title, detailId };
 };
 
 export default useSaveBase;

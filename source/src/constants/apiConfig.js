@@ -91,6 +91,9 @@ const apiConfig = {
             method: 'GET',
             headers: baseHeader,
         },
+        // getchildList:{
+        //     base
+        // }
         getById: {
             baseURL: `${apiUrl}v1/category/get/:id`,
             method: 'GET',

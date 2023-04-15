@@ -8,11 +8,27 @@ import { Avatar } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { UserOutlined } from '@ant-design/icons';
 import useFetch from '@hooks/useFetch';
-
-const CategoryListPage = () => {
-   
+import { apiUrl } from '../../constants/index';
+import { useParams } from 'react-router-dom';
+const CategoryChildListbase = () => {
+    const baseHeader = {
+        'Content-Type': 'application/json',
+    };
+    const { id }=useParams();
     const { data, mixinFuncs, queryFilter, loading, pagination } = useListBase({
-        apiConfig: apiConfig.category,
+        apiConfig: {
+            getList: {
+                baseURL: `${apiUrl}v1/category/list?parentId=${id}`,
+                method: 'GET',
+                headers: baseHeader,
+            },
+            // delete:{
+            //     baseURL: `${apiUrl}v1/category/delete/:id`,
+            //     method: 'DELETE',
+            //     headers: baseHeader,
+            // },
+            delete:apiConfig.category.delete,
+        },
         options: {
             pageSize: DEFAULT_TABLE_ITEM_SIZE,
             objectName: 'category',
@@ -21,6 +37,7 @@ const CategoryListPage = () => {
             funcs.mappingData = (response) => {
                 if (response.result === true) {
                     return {
+                        
                         data: response.data.data,
                         total: response.data.totalElements,
                     };
@@ -29,6 +46,7 @@ const CategoryListPage = () => {
             };
         },
     });
+    // var childdata= data.find(obj1=> obj1.)
     const listStatus=[   { value:STATUS_ACTIVE , label:"Active" },  { value:STATUS_INACTIVE , label:"Lock" }  ];
     const columns = [
         {
@@ -49,7 +67,7 @@ const CategoryListPage = () => {
             dataIndex: 'categoryName',
         },
         mixinFuncs.renderStatusColumn({ width:"90px" }),
-        mixinFuncs.renderActionColumn({ edit: true, delete: true, viewChild:true }, { width: '150px' }),
+        mixinFuncs.renderActionColumn({ edit: true, delete: true }, { width: '150px' }),
     ];
     const searchFields = [
         {
@@ -68,7 +86,14 @@ const CategoryListPage = () => {
     ];
     
     return (
-        <PageWrapper routes={[ { breadcrumbName: 'Home' }, { breadcrumbName: 'category' } ]}>
+        <PageWrapper
+            loading={loading}
+            routes={[
+                { breadcrumbName: 'Home' },
+                { breadcrumbName: 'category', path: `/category` },
+                { breadcrumbName: 'child' },
+            ]}
+        >
             <ListPage
                 searchForm={mixinFuncs.renderSearchForm({ fields: searchFields, initialValues: queryFilter })}
                 actionBar={mixinFuncs.renderActionBar()}
@@ -87,4 +112,4 @@ const CategoryListPage = () => {
     );
 };
 
-export default CategoryListPage;
+export default CategoryChildListbase;

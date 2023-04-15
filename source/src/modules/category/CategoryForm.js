@@ -14,6 +14,7 @@ const CategoryForm = (props) => {
         onSubmit,
         setIsChangedFormValues,
     });
+    console.log("datadetail",dataDetail);
     const uploadFile = (file, onSuccess, onError) => {
         executeUpFile({
             data: {
@@ -35,6 +36,7 @@ const CategoryForm = (props) => {
         return mixinFuncs.handleSubmit({ ...values, categoryImage: imageUrl });
     };
     useEffect(() => {
+        console.log("ready");
         form.setFieldValue({
             ...dataDetail,
         });
@@ -64,10 +66,10 @@ const CategoryForm = (props) => {
                 </Row>
                 <Row gutter={16}>
                     <Col span={12}>
-                        <TextField label="Category Name" required name="categoryName" />
+                        <TextField label="Category Name"  name="categoryName" required />
                     </Col>
                     <Col span={12}>
-                        <TextField label="Category Description" required name="categoryDescription" type="textarea" />
+                        <TextField label="Category Description"  name="categoryDescription" required type="textarea" />
                     </Col>
                     
                 </Row>

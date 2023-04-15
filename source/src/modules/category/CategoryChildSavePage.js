@@ -6,9 +6,9 @@ import useSaveBase from '@hooks/useSaveBase';
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import CategoryForm from './CategoryForm';
-const CategorySavePage = () => {
-    const { id } = useParams();
-
+const CategoryChildSavePage = () => {
+    const { parentid,id } = useParams();
+    // console.log("LastId",params1);
     const { detail, mixinFuncs, loading, onSave, setIsChangedFormValues, isEditing, title } = useSaveBase({
         apiConfig: {
             getDetail: apiConfig.category.getById,
@@ -16,7 +16,7 @@ const CategorySavePage = () => {
             update: apiConfig.category.update,
         },
         options: {
-            getListUrl: `/category`,
+            getListUrl: `/category/child/${parentid}`,
             objectName: 'category',
         },
         override: (funcs) => {
@@ -28,8 +28,8 @@ const CategorySavePage = () => {
                     avatarPath: data.avatar,
                     categoryDescription:data.categoryDescription,
                     categoryName: data.categoryName,
-                    id: id,
                     ...data,
+                    id: id,
                 };
             };
             funcs.prepareCreateData = (data) => {
@@ -38,25 +38,27 @@ const CategorySavePage = () => {
                     ...data,
                     categoryKind: categoryKind.news,
                     avatarPath: data.avatar,
-                    parentId: null,
+                    parentId: parentid,
                     categoryOrdering: 0,
                 };
             };
 
             funcs.mappingData = (data) => {
-                
+                // console.log(data);
                 return {
                     ...data.data,
                 };
             };
         },
     });
+    
     return (
         <PageWrapper
             loading={loading}
             routes={[
                 { breadcrumbName: 'Home' },
                 { breadcrumbName: 'category', path: `/category` },
+                { breadcrumbName: 'child', path: `/category/child/${parentid}` },
                 { breadcrumbName: title },
             ]}
         >
@@ -72,4 +74,4 @@ const CategorySavePage = () => {
     );
 };
 
-export default CategorySavePage;
+export default CategoryChildSavePage;
