@@ -69,9 +69,7 @@ const useListBase = ({
         pageSize: DEFAULT_TABLE_ITEM_SIZE,
     },
     override,
-    listdataCategory=[],
 } = {}) => {
-    // console.log(apiConfig.getList);
     const { params: queryParams, setQueryParams, serializeParams, deserializeParams } = useQueryParams();
     const [ data, setData ] = useState(0);
     const [ loading, setLoading ] = useState(false);
@@ -88,7 +86,7 @@ const useListBase = ({
     const intl = useIntl();
    
     const queryFilter = useMemo(() => deserializeParams(queryParams), [ queryParams ]);
-    console.log(queryFilter);
+    // console.log(queryFilter);
     const hasPermission = (permission) => {
         return true;
     };
@@ -96,7 +94,7 @@ const useListBase = ({
     const mappingData = (response) => {
         return response;
     };
-
+    const [ parentId, setParentId ] = useState([]);
     const handleGetListError = (error) => {
         notification({ type: 'error', message: 'Get list error' });
     };
@@ -127,7 +125,7 @@ const useListBase = ({
         const copyFilter = { ...filter };
 
         const page = parseInt(queryParams.get('page'));
-        copyFilter.page = page > 0 ? page : DEFAULT_TABLE_PAGE_START;
+        copyFilter.page = page > 0 ? page - 1 : DEFAULT_TABLE_PAGE_START;
 
         copyFilter.size = options.pageSize;
 
@@ -138,7 +136,7 @@ const useListBase = ({
         if (!mixinFuncs.hasPermission('read')) return;
        
         const params =  mixinFuncs.prepareGetListParams(queryFilter);
-        // console.log("params",params);
+        console.log("params",params);
        
         mixinFuncs.handleFetchList({ ...params });
        
@@ -159,7 +157,8 @@ const useListBase = ({
     };
 
     function changePagination(page) {
-        queryParams.set('page', page.current);
+
+        queryParams.set('page', page.current  );
         setQueryParams(queryParams);
     }
 
@@ -170,14 +169,13 @@ const useListBase = ({
     const onDeleteItemCompleted = (id) => {
         const currentPage = queryParams.get('page');
         if (data.length === 1 && currentPage > 1) {
-            queryParams.set('page', currentPage - 1);
+            queryParams.set('page', currentPage );
             setQueryParams(queryParams);
         } else {
             mixinFuncs.getList();
             // setData((data) => data.filter((item) => item.id !== id));
         }
     };
-
     const handleDeleteItem = (id) => {
         if (!mixinFuncs.hasPermission('delete')) return;
         setLoading(true);
@@ -281,7 +279,7 @@ const useListBase = ({
             );
         },
         edit: ({ buttonProps, ...dataRow }) => {
-            // console.log("dataRow",dataRow);
+            // console.log(dataRow);
             return (
                 <Link
                     to={mixinFuncs.getItemDetailLink(dataRow)}
@@ -293,13 +291,11 @@ const useListBase = ({
                 </Link>
             );
         },
-        viewChild:({ buttonProps,...dataRow }) => {
-            return(
+        viewChild: ({ buttonProps, ...dataRow }) => {
+            return (
                 <Link
-                    
-                    to={mixinFuncs.getParentItemDetailLink(dataRow)}
-                    
-                    state={{ action: 'view', prevPath:"" }}
+                    to={mixinFuncs.getParentItemDetailLink(dataRow) }
+                    state={{ action: 'view', prevPath: location.pathname }}
                 >
                     <Button {...buttonProps} type="link" style={{ padding: 0 }}>
                         <EyeOutlined color="red" />
@@ -309,7 +305,7 @@ const useListBase = ({
         },
         ...additionalButtons,
     });
-    console.log(location.pathname);
+
     const createActionColumnButtons = (actions) => {
         const actionButtons = [];
         const buttons = actionColumnButtons(mixinFuncs.additionalActionColumnButtons());
@@ -328,7 +324,7 @@ const useListBase = ({
     };
 
     const renderActionColumn = (
-        action = { edit: false, delete: false, changeStatus: false, viewChild:false },
+        action = { edit: false, delete: false, changeStatus: false, viewChild: false },
         columnsProps,
         buttonProps,
     ) => {
@@ -372,18 +368,14 @@ const useListBase = ({
             ),
         };
     };
-    // var haha=pagePath.slice()
-    // console.log("pagePath",pagePath);
+
     const getItemDetailLink = (dataRow) => {
         return `${pagePath}/${dataRow.id}`;
     };
     const getParentItemDetailLink = (dataRow) => {
-        // var id={ categoryId:dataRow.id };
-        // console.log("id",mixinFuncs.changeFilter(id));
-        // return mixinFuncs.changeFilter(id);
+       
         return `${pagePath}/child/${dataRow.id}`;
     };
-
     const getCreateLink = () => {
         return `${pagePath}/create`;
     };
@@ -409,7 +401,6 @@ const useListBase = ({
                 fields={fields}
                 initialValues={initialValues}
                 onSearch={(values) => {
-                    // console.log("value",values);
                     mixinFuncs.changeFilter(values);
                     onSearch?.(values);
                 }}
@@ -471,7 +462,7 @@ const useListBase = ({
     useEffect(() => {
         mixinFuncs.getList();
 
-        const page = parseInt(queryFilter.page);
+        const page = parseInt(queryFilter.page || DEFAULT_TABLE_PAGE_START );
         if (page > 0 && page !== pagination.current) {
             setPagination((p) => ({ ...p, current: page }));
         } else if (page < 1) {

@@ -66,7 +66,6 @@ const CategoryListPage = () => {
            
         },
     ];
-    
     return (
         <PageWrapper routes={[ { breadcrumbName: 'Home' }, { breadcrumbName: 'category' } ]}>
             <ListPage
