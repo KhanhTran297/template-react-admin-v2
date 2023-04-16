@@ -1,13 +1,12 @@
 import { FieldTypes } from '@constants/formConfig';
 import { Button, Col, Form, Row } from 'antd';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import SelectField from './SelectField';
 import DatePickerField from './DatePickerField';
 import DateRangePickerField from './DateRangePickerField';
 import InputTextField from './InputTextField';
 import { SearchOutlined, ClearOutlined } from '@ant-design/icons';
 import { defineMessages, useIntl } from 'react-intl';
-
 import styles from './SearchForm.module.scss';
 
 const searchFields = {
@@ -33,7 +32,7 @@ function SearchForm({ fields = [], hiddenAction, onSearch, className, onReset, i
         },
         [ form, onSearch ],
     );
-
+    
     const handleClearSearch = () => {
         form.resetFields();
         onReset?.();
@@ -50,6 +49,18 @@ function SearchForm({ fields = [], hiddenAction, onSearch, className, onReset, i
             }
 
             const Field = searchFields[type] || searchFields.default;
+            if (type === FieldTypes.SELECT) {
+                return (
+                    <Field
+                        {...props}
+                        name={key}
+                        
+                        onChange={() => {                                                      
+                            handleSearchSubmit({ ...form.getFieldsValue() });                          
+                        }}
+                    />
+                );
+            }
             return <Field {...props} name={key} onChange={submitOnChanged ? handleSearchSubmit : onChange} />;
         },
         [ handleSearchSubmit ],

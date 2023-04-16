@@ -90,7 +90,7 @@ const NewsListPage = () => {
             ),
         },
         { title: 'title', dataIndex: 'title' },
-        { title: 'Category',align: "center", dataIndex: 'categoryId', render:(categoryId) => (handleCategoryName(categoryId)), width:"150px" },     
+        { title: 'Category',align: "center", dataIndex: 'categoryId', render:(categoryId) => (handleCategoryName(categoryId)), width:"200px" },     
         { title: 'Created Date', dataIndex: 'createdDate', width:"200px", align:"center", color:"red" },
         { title: 'Pin top',align: "center", dataIndex: 'pinTop', width: '90px', render:(pinTop) => ( pinTop==1 ? ( <IconPin size={"18px"}/> ) : (<IconPinnedOff size={"18px"}/>) )  },
         mixinFuncs.renderStatusColumn({ width: '90px' }),
@@ -108,6 +108,7 @@ const NewsListPage = () => {
             options:  listStatus ,
             optionValue: 'value',
             optionLabelProp: "label",
+            submitOnChanged:true,
         },
         {   
             type:"SELECT", 
@@ -116,6 +117,7 @@ const NewsListPage = () => {
             options:  listcategory ,
             optionLabelProp: "label",
             optionValue: 'value',
+            submitOnChanged:true,
         },
     ];
    

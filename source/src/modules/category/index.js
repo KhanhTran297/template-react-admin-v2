@@ -63,7 +63,7 @@ const CategoryListPage = () => {
             options:  listStatus ,
             optionValue: 'value',
             optionLabelProp: "label",
-           
+            submitOnChanged: true,
         },
     ];
     return (

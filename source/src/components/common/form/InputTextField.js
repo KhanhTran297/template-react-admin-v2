@@ -10,6 +10,7 @@ const InputTextField = ({
     inputProps,
     size,
     type,
+    allowClear = true,
     ...props
 }) => {
     const {
@@ -27,6 +28,7 @@ const InputTextField = ({
         >
             <Input
                 {...inputProps}
+                allowClear={allowClear}
                 placeholder={placeholder}
                 size={size}
                 type={type}
