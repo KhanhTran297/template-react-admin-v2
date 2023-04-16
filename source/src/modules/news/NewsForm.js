@@ -98,7 +98,7 @@ const NewsForm = (props) => {
             layout="vertical"
             onValuesChange={onValuesChange}
         >
-            <Card className="card-form" bordered={false}>
+            <Card className="card-form" bordered={false} >
                 <Row gutter={16}>
                     <Col span={12}>
                         <CropImageField
@@ -148,7 +148,7 @@ const NewsForm = (props) => {
                 </Row>          
                 <Row gutter={16}>
                     <Col span={24}>
-                        <RichTextField label='Content' required name="content"   ></RichTextField>
+                        <RichTextField label='Content' required name="content"  ></RichTextField>
                     </Col>                            
                 </Row>
               
