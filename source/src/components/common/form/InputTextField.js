@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import useFormField from '@hooks/useFormField';
 import { Form, Input } from 'antd';
@@ -10,14 +10,15 @@ const InputTextField = ({
     inputProps,
     size,
     type,
-    allowClear = true,
+    allowClear= true,
+    onSearch,
+    onChange,
     ...props
 }) => {
     const {
         rules,
         placeholder,
     } = useFormField(props);
-
     return (
         <Form.Item
             label={label}
@@ -32,6 +33,8 @@ const InputTextField = ({
                 placeholder={placeholder}
                 size={size}
                 type={type}
+                onChange={onChange}
+                
             />
         </Form.Item>
     );

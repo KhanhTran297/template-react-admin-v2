@@ -27,17 +27,22 @@ function SearchForm({ fields = [], hiddenAction, onSearch, className, onReset, i
     let valueBack="";
     const handleSearchSubmit = useCallback(
         (values) => {
+            console.log("values neeee",values);
             valueBack=values;
             onSearch?.(values);
         },
         [ form, onSearch ],
     );
-    
-    const handleClearSearch = () => {
+    const handleClearSearch = () => {      
         form.resetFields();
-        onReset?.();
+        onReset?.();      
     };
-
+    const handleResearch =(key) => {
+        var values= { ...form.getFieldsValue() };
+        if(values[key]==""){
+            handleSearchSubmit(values);
+        }
+    };
     const renderField = useCallback(
         ({ type, submitOnChanged, onChange, key, renderItem, ...props }) => {
             if (renderItem) {
@@ -61,7 +66,8 @@ function SearchForm({ fields = [], hiddenAction, onSearch, className, onReset, i
                     />
                 );
             }
-            return <Field {...props} name={key} onChange={submitOnChanged ? handleSearchSubmit : onChange} />;
+            return <Field {...props} name={key} onChange={() => {handleResearch(key);}}  />;
+           
         },
         [ handleSearchSubmit ],
     );
